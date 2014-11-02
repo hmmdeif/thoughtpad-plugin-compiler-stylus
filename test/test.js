@@ -18,7 +18,7 @@ describe("stylus compilation plugin", function () {
         thoughtpad = man.registerPlugins([app]);
 
         thoughtpad.subscribe("stylesheet-compile-complete", function *() {
-            true.should.be.false; // Should never hit here because the extension is not coffee
+            true.should.be.false; // Should never hit here because the extension is not stylus
         });
 
         thoughtpad.notify("stylesheet-compile-request", { ext: "css" });
