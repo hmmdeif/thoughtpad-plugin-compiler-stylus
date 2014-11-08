@@ -10,7 +10,7 @@ var init = function (thoughtpad) {
 compile = function *(obj) {
     if (obj.ext !== "styl") return;
 
-    _thoughtpad.notify("stylesheet-compile-complete", stylus(obj.contents).use(nib()).render());
+    yield _thoughtpad.notify("stylesheet-compile-complete", stylus(obj.contents).use(nib()).render());
 };
 
 module.exports = {
