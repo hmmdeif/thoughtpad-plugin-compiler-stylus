@@ -8,24 +8,24 @@ describe("stylus compilation plugin", function () {
     it("should register correctly to events", function () {
         thoughtpad = man.registerPlugins([app]);
 
-        thoughtpad.subscribe("stylesheet-compile-complete", function *() {
+        thoughtpad.subscribe("css-compile-complete", function *() {
             true.should.be.true;
         });
 
         co(function *() {
-            yield thoughtpad.notify("stylesheet-compile-request", { ext: "styl", contents: "" });
+            yield thoughtpad.notify("css-compile-request", { ext: "styl", contents: "" });
         })();
     });
 
     it("should ignore anything other than stylus", function () {
         thoughtpad = man.registerPlugins([app]);
 
-        thoughtpad.subscribe("stylesheet-compile-complete", function *() {
+        thoughtpad.subscribe("css-compile-complete", function *() {
             true.should.be.false; // Should never hit here because the extension is not stylus
         });
 
         co(function *() {
-            yield thoughtpad.notify("stylesheet-compile-request", { ext: "css" });
+            yield thoughtpad.notify("css-compile-request", { ext: "css" });
         })();
     });
 
@@ -35,13 +35,13 @@ describe("stylus compilation plugin", function () {
 
         thoughtpad = man.registerPlugins([app]);
 
-        thoughtpad.subscribe("stylesheet-compile-complete", function *(res) {
+        thoughtpad.subscribe("css-compile-complete", function *(res) {
             contents = res.contents;
             name = res.name;
         });
 
         co(function *() {
-            yield thoughtpad.notify("stylesheet-compile-request", { ext: "styl", contents: "table\n\twidth: 100%\n\n\t.white td\n\t\tbackground-color: #eee", name: 'hello' });
+            yield thoughtpad.notify("css-compile-request", { ext: "styl", contents: "table\n\twidth: 100%\n\n\t.white td\n\t\tbackground-color: #eee", name: 'hello' });
             contents.should.equal("table {\n  width: 100%;\n}\ntable .white td {\n  background-color: #eee;\n}\n");
             name.should.equal('hello');
             done();
