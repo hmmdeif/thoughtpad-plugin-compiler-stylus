@@ -1,16 +1,14 @@
 var stylus = require('stylus'),
-    nib = require('nib'),
-    _thoughtpad;
+    nib = require('nib');
 
 var init = function (thoughtpad) {
-    _thoughtpad = thoughtpad;
-    _thoughtpad.subscribe("stylesheet-compile-request", compile);
+    thoughtpad.subscribe("stylesheet-compile-request", compile);
 },
 
 compile = function *(obj) {
     if (obj.ext !== "styl") return;
 
-    yield _thoughtpad.notify("stylesheet-compile-complete", stylus(obj.contents).use(nib()).render());
+    yield obj.thoughtpad.notify("stylesheet-compile-complete", { contents: stylus(obj.contents).use(nib()).render(), name: obj.name });
 };
 
 module.exports = {

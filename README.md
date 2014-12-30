@@ -18,7 +18,7 @@ var thoughtpad = man.registerPlugins([stylus]);
 thoughtpad.subscribe("stylesheet-compile-complete", function (data) {
     console.log("CSS is returned here"); 
 });
-thoughtpad.notify("stylesheet-compile-request", { ext: "styl", contents: "your stylus code here" });
+yield thoughtpad.notify("stylesheet-compile-request", { ext: "styl", contents: "your stylus code here", name: "name of file" });
 ```
 
 ## Tests

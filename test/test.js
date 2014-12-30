@@ -30,14 +30,20 @@ describe("stylus compilation plugin", function () {
     });
 
     it("should compile stylus", function (done) {
+        var contents = "",
+            name = "";
+
         thoughtpad = man.registerPlugins([app]);
 
-        thoughtpad.subscribe("stylesheet-compile-complete", function *(contents) {
-            contents.should.equal("table {\n  width: 100%;\n}\ntable .white td {\n  background-color: #eee;\n}\n");
+        thoughtpad.subscribe("stylesheet-compile-complete", function *(res) {
+            contents = res.contents;
+            name = res.name;
         });
 
         co(function *() {
-            yield thoughtpad.notify("stylesheet-compile-request", { ext: "styl", contents: "table\n\twidth: 100%\n\n\t.white td\n\t\tbackground-color: #eee" });
+            yield thoughtpad.notify("stylesheet-compile-request", { ext: "styl", contents: "table\n\twidth: 100%\n\n\t.white td\n\t\tbackground-color: #eee", name: 'hello' });
+            contents.should.equal("table {\n  width: 100%;\n}\ntable .white td {\n  background-color: #eee;\n}\n");
+            name.should.equal('hello');
             done();
         })();
     });
