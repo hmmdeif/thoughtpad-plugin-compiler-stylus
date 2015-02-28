@@ -5,7 +5,7 @@ var should = require('should'),
     thoughtpad;
 
 describe("stylus compilation plugin", function () {
-    it("should register correctly to events", function () {
+    it("should register correctly to events", function (done) {
         thoughtpad = man.registerPlugins([app]);
 
         thoughtpad.subscribe("css-compile-complete", function *() {
@@ -14,10 +14,11 @@ describe("stylus compilation plugin", function () {
 
         co(function *() {
             yield thoughtpad.notify("css-compile-request", { ext: "styl", contents: "" });
-        })();
+            done();
+        }).catch(done);
     });
 
-    it("should ignore anything other than stylus", function () {
+    it("should ignore anything other than stylus", function (done) {
         thoughtpad = man.registerPlugins([app]);
 
         thoughtpad.subscribe("css-compile-complete", function *() {
@@ -26,7 +27,8 @@ describe("stylus compilation plugin", function () {
 
         co(function *() {
             yield thoughtpad.notify("css-compile-request", { ext: "css" });
-        })();
+            done();
+        }).catch(done);
     });
 
     it("should compile stylus", function (done) {
@@ -45,6 +47,6 @@ describe("stylus compilation plugin", function () {
             contents.should.equal("table {\n  width: 100%;\n}\ntable .white td {\n  background-color: #eee;\n}\n");
             name.should.equal('hello');
             done();
-        })();
+        }).catch(done);
     });
 });
